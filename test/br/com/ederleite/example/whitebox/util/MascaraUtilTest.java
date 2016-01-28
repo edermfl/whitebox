@@ -35,11 +35,17 @@ public class MascaraUtilTest {
 	final MascaraUtil mascaraUtil = new MascaraUtil();
 
 	// invocação método privado
-	final Object retornoMetodoPrivadoRemoverMascara = Whitebox
+	// Cenário 1
+	Object retornoMetodoPrivadoRemoverMascara = Whitebox
 			.invokeMethod(mascaraUtil, "removerMascara", "01...234***56.789-0");
-
 	System.out.println(retornoMetodoPrivadoRemoverMascara);
 	Assert.assertEquals(CPF_PADRAO, retornoMetodoPrivadoRemoverMascara);
+
+	// Cenário 2
+	retornoMetodoPrivadoRemoverMascara = Whitebox
+			.invokeMethod(mascaraUtil, "removerMascara", "abc(def)....--->>123");
+	System.out.println(retornoMetodoPrivadoRemoverMascara);
+	Assert.assertEquals("abcdef123", retornoMetodoPrivadoRemoverMascara);
     }
 
     @Test
@@ -53,11 +59,17 @@ public class MascaraUtilTest {
 
 	// invocação método privado
 	// Tenha muita atenção na ordem dos parametros pois isso pode fará que o resultado dê errado
-	final Object retornoMetodoPrivadoRemoverMascara = Whitebox
+	// Cenário 1
+	Object retornoMetodoPrivadoRemoverMascara = Whitebox
 			.invokeMethod(mascaraUtil, "getValorComMascara", mascaraCpf, "01...23456.789-0");
-
 	System.out.println(retornoMetodoPrivadoRemoverMascara);
 	Assert.assertEquals(CPF_MASCARADO_PADRAO, retornoMetodoPrivadoRemoverMascara);
+
+	// Cenário 2
+	retornoMetodoPrivadoRemoverMascara = Whitebox
+			.invokeMethod(mascaraUtil, "getValorComMascara", "AA#.##", "ab.123");
+	System.out.println(retornoMetodoPrivadoRemoverMascara);
+	Assert.assertEquals("ab1.23", retornoMetodoPrivadoRemoverMascara);
     }
 
 }
